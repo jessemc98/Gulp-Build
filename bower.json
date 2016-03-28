@@ -1,0 +1,22 @@
+{
+  "name": "JesseGulpBuild",
+  "authors": [
+    "Jesse McIntosh <jessemc98@hotmail.com>"
+  ],
+  "description": "my first gulp build",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "https://github.com/jessemc98/Gulp-Build.git",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^2.2.2",
+    "skeleton": "^2.0.4"
+  }
+}
