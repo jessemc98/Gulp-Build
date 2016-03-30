@@ -34,5 +34,7 @@ Thumbs.db
 #################
 node_modules/
 bower_components/
+dist/css
+dist/js
 .sass-cache
 *.css.map
