@@ -1,13 +1,18 @@
+'use strict';
+
 //Required//
 
 var gulp = require('gulp');
 var rename = require('gulp-rename');
 var sass = require('gulp-sass');
 var csso = require('gulp-csso');
+var concat = require('gulp-concat');
 var sourcemaps = require('gulp-sourcemaps');
 var autoprefixer = require('gulp-autoprefixer');
 var watchify = require('watchify');
 var browserify = require('browserify');
+var mainBowerFiles = require('main-bower-files');
+var filter = require('gulp-filter');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var gutil = require('gulp-util');
@@ -28,7 +33,7 @@ var opts = assign({}, watchify.args, customOpts);
 var b = watchify(browserify(opts)); 
 
 // add transformations here
-gulp.task('scripts', bundle); // so you can run `gulp js` to build the file
+gulp.task('scripts', bundle); // so you can run `gulp scripts` to build the file
 b.on('update', bundle); // on any dep update, runs the bundler
 b.on('log', gutil.log); // output build logs to terminal
 
@@ -68,6 +73,30 @@ gulp.task('css', function() {
 
 
 
+// bower_components compile to dist //
+gulp.task('bower-compile', function () {
+    var jsFilter = filter('**/*.js', {restore: true});
+    var cssFilter = filter('**/*.css', {restore: true});
+
+    var compileJS = gulp.src(mainBowerFiles(), { base: './bower_components'})
+        .pipe(jsFilter)
+        .pipe(concat('vendor.min.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest('./dist/js/vendor'))
+        .pipe(browserSync.reload({stream:true}));
+
+    var compileCSS = gulp.src('./bower_components/**/*.css')
+        //.pipe(cssFilter)
+        .pipe(concat('vendor.min.css'))
+        .pipe(csso())
+        .pipe(gulp.dest('./dist/css/vendor'))
+        .pipe(browserSync.reload({stream:true}));
+
+    return (compileJS, compileCSS);
+});
+
+
+
 // HTML Tasks //
 gulp.task('html', function() {
   return gulp.src('./dist/**/*.html')
@@ -97,4 +126,4 @@ gulp.task('watch', function() {
 
 
 //Default Task//
-gulp.task('default', ['scripts', 'css', 'browser-sync', 'watch']);
+gulp.task('default', ['scripts', 'css', 'bower-compile', 'browser-sync', 'watch']);
