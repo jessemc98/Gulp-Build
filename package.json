@@ -28,6 +28,7 @@
     "lodash.assign": "^4.0.6",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
-    "watchify": "^3.7.0"
+    "watchify": "^3.7.0",
+    "main-bower-files": "^2.11.1"
   }
 }
